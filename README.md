@@ -13,11 +13,12 @@ Sending X bytes every 10 ms
 
 With -O0 optimizations (none)
 
-Bytes		Throughtput		bg_counter after 5 s	  Diff		OH %
-3000		210 KB/s		10323206				119666		1,1%
-2100		205 KB/s		10388130				 54742		0,5%
-1000		98 KB/s			10392639				 50233		0,5%
-(none)		0 KB/s			10442872             (baseline)
+Bytes  |  Throughtput|	bg_counter |    Diff |		OH %
+-------|-------------|-------------|---------|---------
+3000   | 		 210 KB/s|  10 323 206 | 119 666 |		1,1%
+2100   |     205 KB/s|  10 388 130 |	54 742 |		0,5%
+1000   |      98 KB/s|  10 392 639 |	50 233 |		0,5%
+(none) |       0 KB/s|  10 442 872 |       - |      -  
 
 With -O1 optimizations
 
