@@ -2,7 +2,31 @@
 
 This project demonstrates how to stream data at fairly high speed using the Virtual Com Port on the B-L475E-IOT01A1 board. This is driven by USART1 and provided over the STLINK USB connector. This board uses the older STLINK v2.1 which is limited to about 2 MHz transmission speed. 
 
-WIth this demo I was able to achive 210 KB/s and with very low overhead (< 1%) thanks to using DMA transmission (offloads the CPU).
+With this demo I was able to achive 210 KB/s and with very low overhead (< 1%) thanks to using DMA to offload the CPU.
+Note that the initial version of this demo does not contain TraceRecorder, so the tests have been made using dummy data. Need to add that and modularize the UART/DMA code as a new streamport module.
+
+To measure the overhead, I used two tasks. The TX task send data every 10 ms and runs on high priority. The BG task runs on lower priority and updates a counter (bg_counter) as fast as possible for 5 seconds (until a breakpoint is hit). I then save the bg_counter. I repeated this experiment with different transmission rates and also without sending any data (the baseline).
+
+This resulted in the following data:
+
+Sending X bytes every 10 ms
+
+With -O0 optimizations (none)
+
+Bytes		Throughtput		bg_counter after 5 s	  Diff		OH %
+3000		210 KB/s		10323206				119666		1,1%
+2100		205 KB/s		10388130				 54742		0,5%
+1000		98 KB/s			10392639				 50233		0,5%
+(none)		0 KB/s			10442872             (baseline)
+
+With -O1 optimizations
+
+Bytes		Throughtput		bg_counter after 5 s	  Diff		OH %
+3000		210 KB/s		21965633				146226		0,6%	
+2100		206 KB/s		22063679				 48180		0,2%
+(none)		0 KB/s			22111859			 (baseline)
+
+
 
 What I needed to change:
 1. Follow this guide using CubeMX: https://wiki.st.com/stm32mcu/wiki/Getting_started_with_UART#UART_with_DMA
